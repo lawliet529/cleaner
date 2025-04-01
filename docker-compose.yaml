@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cleaner:
+    image: ghcr.io/lawliet529/cleaner
+    restart: unless-stopped
+    environment:
+      - CLEAN_DIR=/data
+      - CLEAN_SCHEDULE=0 * * * *
+      - CLEAN_OLDER_THAN=30m
+    volumes:
+      - ./data:/data
+      - ./logs:/var/log
