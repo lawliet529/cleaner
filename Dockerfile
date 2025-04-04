@@ -7,7 +7,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /cleanup.sh /entrypoint.sh && \
     mkdir -p /var/log && \
-    touch /var/log/cron.log && \
-    chmod 666 /var/log/cron.log
+    touch /var/log/cleaner.log && \
+    chmod 666 /var/log/cleaner.log
 
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
