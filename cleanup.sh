@@ -3,7 +3,7 @@
 set -eo pipefail
 
 echo "$(date) - Starting cleanup job"
-echo "Environment: CLEAN_DIR=${CLEAN_DIR}, CLEAN_OLDER_THAN=${CLEAN_OLDER_THAN}"
+echo "Environment: CLEAN_DIR=${CLEAN_DIR}, CLEAN_OLDER_THAN=${CLEAN_OLDER_THAN}, DRY_RUN=${DRY_RUN}"
 
 # Validate environment variables
 if [ -z "${CLEAN_DIR}" ] || [ -z "${CLEAN_OLDER_THAN}" ]; then
@@ -25,13 +25,14 @@ esac
 echo "Searching in: ${CLEAN_DIR}"
 echo "Deletion criteria: ${find_args}"
 
-# Dry-run simulation
-# echo "=== DRY RUN RESULTS ==="
-# find "${CLEAN_DIR}" -mindepth 1 ${find_args} -exec echo "[DRY RUN] Would delete: {}" \;
-# echo "======================"
-
-# Uncomment for actual deletion
-find "${CLEAN_DIR}" -mindepth 1 ${find_args} -exec rm -rfv {} \;
+# Check if dry run is enabled
+if [ -n "${DRY_RUN}" ]; then
+    echo "=== DRY RUN RESULTS ==="
+    find "${CLEAN_DIR}" -mindepth 1 ${find_args} -exec echo "[DRY RUN] Would delete: {}" \;
+    echo "======================"
+else
+    find "${CLEAN_DIR}" -mindepth 1 ${find_args} -exec rm -rf {} \;
+fi
 
 echo "$(date) - Cleanup job completed"
 echo "----------------------------------------"
