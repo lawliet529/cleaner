@@ -9,4 +9,3 @@ services:
       - CLEAN_OLDER_THAN=30m
     volumes:
       - ./data:/data
-      - ./logs:/var/log
